@@ -1,22 +1,32 @@
 <script setup lang="ts">
 
-import {UserFilled} from "@element-plus/icons-vue";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive} from "vue";
 import {DeptUser, getDeptUserTree} from "@/api/sys/user.ts";
 
-const treeData = ref<DeptUser[]>([]);
+
+const initAssigneeStatus = Object.freeze({
+  value: '',
+  data: [],
+  loadState: false
+})
+
+const state = reactive<{
+  assignee: {
+    value: string | number ,
+    data: DeptUser[],
+    loadState: boolean
+  }
+}>({
+  assignee: {
+    ...initAssigneeStatus
+  }
+})
 
 
 onMounted(async () => {
-
-  treeData.value = await getDeptUserTree()
-
-  const res = await getDeptUserTree()
-  console.log(res[0].children)
-
-
-  console.log(res);
-  console.log(treeData.value)
+  state.assignee.loadState = true
+  state.assignee.data = await getDeptUserTree()
+  state.assignee.loadState = false
 })
 
 </script>
@@ -24,17 +34,8 @@ onMounted(async () => {
 <template>
   <el-row>
     <el-col :span="22">
-      <el-select></el-select>
-    </el-col>
-
-    <el-col :span="2">
-      <el-button type="primary">
-        <template #icon>
-          <el-icon>
-            <UserFilled/>
-          </el-icon>
-        </template>
-      </el-button>
+      <el-tree-select :data="state.assignee.data" show-checkbox multiple v-model="state.assignee.value"
+                      />
     </el-col>
   </el-row>
 </template>

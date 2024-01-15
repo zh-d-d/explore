@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import SnakerFlowDesigner from 'snakerflow-designer-vue';
 import {ref} from "vue";
-import AssigneeInput from "./views/wf/processDesign/assigneeInput.vue";
+
+
+import AssigneeInput from "@/views/wf/processDesign/assigneeInput.vue";
 
 const flowData = ref({})
 const assigneeConfigWay = ref(2);
+
+
+
+
+
 
 </script>
 
@@ -44,7 +51,8 @@ const assigneeConfigWay = ref(2);
             </el-radio-group>
 
             <div style="margin-top: 8px">
-              <AssigneeInput />
+              <AssigneeInput v-if="assigneeConfigWay==2" v-model:value="model[field]"/>
+              <el-input v-else v-model:value="model[field]"></el-input>
             </div>
           </el-form-item>
         </el-form>
@@ -66,6 +74,8 @@ const assigneeConfigWay = ref(2);
 
 </template>
 
-<style scoped>
-
+<style scoped >
+:deep(.el-form-item__content){
+  display: block;
+}
 </style>
