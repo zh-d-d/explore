@@ -4,9 +4,11 @@ import {ref} from "vue";
 
 
 import AssigneeInput from "@/views/wf/processDesign/assigneeInput.vue";
+import AssigneeHandlerDict from "@/views/wf/processDesign/AssigneeHandlerDict.vue";
 
 const flowData = ref({})
 const assigneeConfigWay = ref(2);
+const assignmentHandlerConfigWay=ref(2)
 
 
 
@@ -68,6 +70,23 @@ const assigneeConfigWay = ref(2);
         <!--            </div>-->
         <!--          </a-form-item>-->
         <!--        </a-form>-->
+      </template>
+
+      <template #form-item-task-assignmentHandler="{ model, field }">
+        <el-form :model="model">
+          <el-form-item label="参与者处理类">
+            <el-radio-group v-model="assignmentHandlerConfigWay">
+              <el-radio-button :value="2">下拉选择</el-radio-button>
+              <el-radio-button :value="1">文本输入</el-radio-button>
+            </el-radio-group>
+            <div>
+              <AssigneeHandlerDict code="wf_assignment_handler"    v-if="assignmentHandlerConfigWay == 2"
+                                   v-model:value="model[field]"/>
+              <el-input  v-model:value="model[field]"></el-input>
+            </div>
+          </el-form-item>
+        </el-form>
+
       </template>
     </SnakerFlowDesigner>
   </div>
